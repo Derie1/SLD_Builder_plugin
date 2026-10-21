@@ -1,0 +1,96 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- AutoCAD 2025 shipped on .NET 8; current updates of 2025/2026 and AutoCAD 2027 run on .NET 10,
+         which loads .NET 8 plugins. Targeting .NET 8 covers all of them. -->
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <PlatformTarget>x64</PlatformTarget>
+    <RootNamespace>SldBuilder.Acad</RootNamespace>
+    <!-- Copies NuGet dependencies (ClosedXML, ...) to the output folder, as a plugin needs. -->
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- AutoCAD 2025 API, the last package built for net8.0 (25.0.2+ target net10.0).
+         The assemblies come from AutoCAD itself at runtime. -->
+    <PackageReference Include="AutoCAD.NET" Version="25.0.1" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SldBuilder.Core\SldBuilder.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- WPF projects do not import System.IO implicitly. -->
+    <Using Include="System.IO" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\*.png" />
+    <None Include="..\..\templates\*" Link="Templates\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Strings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <!--
+    Release build:
+      artifacts\SldBuilder.bundle                       autoloader package (loads in AutoCAD 2025 and newer)
+      artifacts\release\SLD_Builder_<ver>\              INSTALL.BAT + SldBuilder.bundle.zip
+      artifacts\SLD_Builder_<ver>.zip                   the same folder as one archive, for users
+    dotnet build -c Release -p:DeployBundle=true also copies the bundle to %APPDATA%\Autodesk\ApplicationPlugins.
+  -->
+  <PropertyGroup>
+    <ArtifactsDir>$(MSBuildThisFileDirectory)..\..\artifacts\</ArtifactsDir>
+    <BundleDir>$(ArtifactsDir)SldBuilder.bundle\</BundleDir>
+    <ReleaseName>SLD_Builder_$(Version)</ReleaseName>
+    <ReleaseDir>$(ArtifactsDir)release\$(ReleaseName)\</ReleaseDir>
+    <InstallerDir>$(MSBuildThisFileDirectory)..\..\installer\</InstallerDir>
+    <ManifestPartsDir>$(InstallerDir)PackageContents\</ManifestPartsDir>
+    <PluginsDir>$(APPDATA)\Autodesk\ApplicationPlugins\SldBuilder.bundle\</PluginsDir>
+  </PropertyGroup>
+
+  <Target Name="AssembleBundle" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <ItemGroup>
+      <_BundleBinaries Include="$(OutDir)**\*" Exclude="$(OutDir)**\*.pdb" />
+      <_ManifestParts Include="$(ManifestPartsDir)*.xml" />
+    </ItemGroup>
+    <PropertyGroup>
+      <!-- Default manifest = all supported versions. INSTALL.BAT rebuilds it from the same parts for the chosen version. -->
+      <_Manifest>$([System.IO.File]::ReadAllText('$(ManifestPartsDir)head.xml'))$([System.IO.File]::ReadAllText('$(ManifestPartsDir)ALL.xml'))$([System.IO.File]::ReadAllText('$(ManifestPartsDir)tail.xml'))</_Manifest>
+    </PropertyGroup>
+    <!-- No RemoveDir here: OneDrive keeps handles on synced folders and the delete fails. Files are overwritten. -->
+    <WriteLinesToFile File="$(BundleDir)PackageContents.xml" Lines="$(_Manifest)" Overwrite="true" />
+    <Copy SourceFiles="@(_ManifestParts)" DestinationFolder="$(BundleDir)Installer\PackageContents" />
+    <Copy SourceFiles="@(_BundleBinaries)" DestinationFolder="$(BundleDir)Contents\Win64\%(RecursiveDir)" />
+    <Message Importance="high" Text="Bundle: $(BundleDir)" />
+  </Target>
+
+  <Target Name="PackRelease" AfterTargets="AssembleBundle">
+    <MakeDir Directories="$(ReleaseDir)" />
+    <ZipDirectory SourceDirectory="$(BundleDir)" DestinationFile="$(ReleaseDir)SldBuilder.bundle.zip" Overwrite="true" />
+    <Copy SourceFiles="$(InstallerDir)INSTALL.BAT" DestinationFolder="$(ReleaseDir)" />
+    <ZipDirectory SourceDirectory="$(ReleaseDir)" DestinationFile="$(ArtifactsDir)$(ReleaseName).zip" Overwrite="true" />
+    <Message Importance="high" Text="Release: $(ArtifactsDir)$(ReleaseName).zip" />
+  </Target>
+
+  <Target Name="DeployBundle" AfterTargets="AssembleBundle" Condition="'$(DeployBundle)' == 'true'">
+    <ItemGroup>
+      <_BundleFiles Include="$(BundleDir)**\*" />
+    </ItemGroup>
+    <RemoveDir Directories="$(PluginsDir)" />
+    <Copy SourceFiles="@(_BundleFiles)" DestinationFolder="$(PluginsDir)%(RecursiveDir)" />
+    <Message Importance="high" Text="Deployed: $(PluginsDir)" />
+  </Target>
+
+</Project>

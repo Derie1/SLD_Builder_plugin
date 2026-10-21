@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>SldBuilder.Core</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- AutoCAD 2026/2027 ship ClosedXML 0.102.2 and DocumentFormat.OpenXml 2.16.0 themselves.
+         Use the same versions so only one copy can end up loaded in the AutoCAD process. -->
+    <PackageReference Include="ClosedXML" Version="[0.102.2]" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="[2.16.0]" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SldBuilder.Core.Tests" />
+  </ItemGroup>
+
+</Project>

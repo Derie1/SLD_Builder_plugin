@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage
+    SchemaVersion="1.0"
+    AppVersion="0.6.0"
+    Name="SLD Builder"
+    Description="Builds single line diagrams of distribution boards from an Excel calculation file."
+    Author="Mikhail Davydov"
+    ProductCode="{6E0B4C3A-2F7D-4F7B-9B6A-5D3C8E1A4F21}"
+    UpgradeCode="{A1C9E5B2-7D44-4E0F-8C3B-2B9F6D7E1C08}">
+
+  <CompanyDetails Name="Mikhail Davydov" />
+
+  <!-- R25.0 = AutoCAD 2025, the first .NET release supported by the plugin. -->
+  <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R25.0" />
+

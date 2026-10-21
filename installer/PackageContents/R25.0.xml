@@ -1,0 +1,14 @@
+  <Components Description="AutoCAD 2025">
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R25.0" SeriesMax="R25.0" />
+    <ComponentEntry
+        AppName="SldBuilder"
+        ModuleName="./Contents/Win64/SldBuilder.Acad.dll"
+        AppDescription="SLD Builder"
+        LoadOnCommandInvocation="True"
+        LoadOnAutoCADStartup="False">
+      <Commands GroupName="SLDBUILDER">
+        <Command Global="SLDBUILD" Local="SLDBUILD" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+

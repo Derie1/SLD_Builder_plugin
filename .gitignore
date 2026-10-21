@@ -1,0 +1,11 @@
+bin/
+obj/
+artifacts/
+.vs/
+*.user
+*.suo
+*.bak
+*.dwl
+*.dwl2
+# AutoCAD crash reports written next to opened drawings
+ErrorReports/

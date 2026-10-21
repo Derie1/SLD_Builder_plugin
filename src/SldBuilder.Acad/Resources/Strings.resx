@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Single Line Diagram builder (SLD Builder)</value>
+  </data>
+  <data name="WelcomeText" xml:space="preserve">
+    <value>Welcome to SLD Builder.
+Select your Excel calculation file. Then tick the checkbox to create a new board diagram from the template, or select the drawing with a previously created diagram.</value>
+  </data>
+  <data name="ExcelLabel" xml:space="preserve">
+    <value>Excel calculation file to build the SLD from:</value>
+  </data>
+  <data name="DwgLabel" xml:space="preserve">
+    <value>AutoCAD drawing to build the SLD in:</value>
+  </data>
+  <data name="NewFromTemplate" xml:space="preserve">
+    <value>Build new SLD from template</value>
+  </data>
+  <data name="Build" xml:space="preserve">
+    <value>Build SLD</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="BrowseExcelTitle" xml:space="preserve">
+    <value>Select Excel calculation file</value>
+  </data>
+  <data name="BrowseDwgTitle" xml:space="preserve">
+    <value>Select DWG template or previously created diagram</value>
+  </data>
+  <data name="ExcelFilter" xml:space="preserve">
+    <value>Excel files (*.xlsx;*.xlsm)|*.xlsx;*.xlsm</value>
+  </data>
+  <data name="DwgFilter" xml:space="preserve">
+    <value>AutoCAD drawings (*.dwg)|*.dwg</value>
+  </data>
+  <data name="ValidateExcelPath" xml:space="preserve">
+    <value>Select an existing Excel file.</value>
+  </data>
+  <data name="ValidateDwgPath" xml:space="preserve">
+    <value>Select an existing DWG file.</value>
+  </data>
+  <data name="ErrFileNotFound" xml:space="preserve">
+    <value>File not found: {0}</value>
+  </data>
+  <data name="ErrNamedRangeMissing" xml:space="preserve">
+    <value>Named range or cell not found in the Excel file: {0}</value>
+  </data>
+  <data name="ErrGroupRangeTooShort" xml:space="preserve">
+    <value>Range DB_EXPORT ({0}) has fewer rows than expected.</value>
+  </data>
+  <data name="ErrMissingBlocks" xml:space="preserve">
+    <value>Block definitions missing in the drawing: {0}</value>
+  </data>
+  <data name="ErrUnexpected" xml:space="preserve">
+    <value>SLD Builder error: {0}</value>
+  </data>
+  <data name="WarnExcelError" xml:space="preserve">
+    <value>Excel error in cell {0}, written as empty text.</value>
+  </data>
+  <data name="WarnIncomerTypeMissing" xml:space="preserve">
+    <value>Incomer type is not set in cell {0}, {1} used.</value>
+  </data>
+  <data name="WarnVisibility" xml:space="preserve">
+    <value>{0}: value "{2}" not found in parameter {1}, default state kept.</value>
+  </data>
+  <data name="WarnVisibilityGroup" xml:space="preserve">
+    <value>{0}, group {3}: value "{2}" not found in parameter {1}, default state kept.</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>SLD built: {0} groups, {1} old blocks erased, {2} warnings.</value>
+  </data>
+</root>
