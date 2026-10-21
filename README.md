@@ -65,7 +65,7 @@ Release-сборка создаёт:
 | Путь | Что это |
 |---|---|
 | `artifacts/SldBuilder.bundle` | Пакет автозагрузки (все версии с 2025) |
-| `artifacts/release/SLD_Builder_<версия>/` | `INSTALL.BAT` + `SldBuilder.bundle.zip` |
+| `artifacts/release/SLD_Builder_<версия>/` | `INSTALL.BAT` + `SldBuilder.bundle.zip` + `LICENSE` + `THIRD-PARTY-NOTICES.txt` |
 | `artifacts/SLD_Builder_<версия>.zip` | То же одним архивом — его и отдавать пользователям |
 
 `dotnet build -c Release -p:DeployBundle=true` дополнительно копирует bundle в `%APPDATA%\Autodesk\ApplicationPlugins`.
@@ -89,6 +89,19 @@ Release-сборка создаёт:
 - отказывается работать при запущенном `acad.exe` (DLL была бы занята).
 
 **Новая версия AutoCAD:** добавить строку `SERIES_<год>` в `INSTALL.BAT` и файл `installer/PackageContents/R<серия>.xml`.
+
+## Лицензия
+
+SLD Builder распространяется по лицензии MIT, см. [LICENSE](LICENSE).
+
+В релиз входят сторонние библиотеки: ClosedXML, DocumentFormat.OpenXml, ExcelNumberFormat, Irony (MIT),
+SixLabors.Fonts (Apache-2.0) и XLParser (MPL-2.0). Их лицензии и ссылки на исходный код — в
+[THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt); файл входит в bundle и в релизный архив.
+При обновлении этих пакетов версии в нём нужно поправить.
+
+Сборки AutoCAD .NET API (пакет `AutoCAD.NET`, лицензия Autodesk ObjectARX) нужны только для компиляции
+и в репозиторий и релиз не входят. AutoCAD — зарегистрированный товарный знак Autodesk, Inc.;
+проект не связан с Autodesk.
 
 ---
 
@@ -157,7 +170,7 @@ The Release build produces:
 | Path | What it is |
 |---|---|
 | `artifacts/SldBuilder.bundle` | Autoloader package (all versions from 2025) |
-| `artifacts/release/SLD_Builder_<version>/` | `INSTALL.BAT` + `SldBuilder.bundle.zip` |
+| `artifacts/release/SLD_Builder_<version>/` | `INSTALL.BAT` + `SldBuilder.bundle.zip` + `LICENSE` + `THIRD-PARTY-NOTICES.txt` |
 | `artifacts/SLD_Builder_<version>.zip` | The same as one archive — this is what users get |
 
 `dotnet build -c Release -p:DeployBundle=true` also copies the bundle to `%APPDATA%\Autodesk\ApplicationPlugins`.
@@ -181,3 +194,16 @@ What the installer does:
 - refuses to run while `acad.exe` is running (the DLL would be locked).
 
 **New AutoCAD version:** add a `SERIES_<year>` line to `INSTALL.BAT` and the file `installer/PackageContents/R<series>.xml`.
+
+## License
+
+SLD Builder is licensed under the MIT License, see [LICENSE](LICENSE).
+
+The release includes third-party libraries: ClosedXML, DocumentFormat.OpenXml, ExcelNumberFormat, Irony (MIT),
+SixLabors.Fonts (Apache-2.0) and XLParser (MPL-2.0). Their licenses and source code links are in
+[THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt); the file ships in the bundle and in the release archive.
+Update the versions there when these packages are upgraded.
+
+The AutoCAD .NET API assemblies (package `AutoCAD.NET`, Autodesk ObjectARX license) are needed only to compile
+and are not part of the repository or the release. AutoCAD is a registered trademark of Autodesk, Inc.;
+this project is not affiliated with Autodesk.

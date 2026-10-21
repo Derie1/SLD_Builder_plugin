@@ -57,6 +57,7 @@
     <ReleaseDir>$(ArtifactsDir)release\$(ReleaseName)\</ReleaseDir>
     <InstallerDir>$(MSBuildThisFileDirectory)..\..\installer\</InstallerDir>
     <ManifestPartsDir>$(InstallerDir)PackageContents\</ManifestPartsDir>
+    <RepoRootDir>$(MSBuildThisFileDirectory)..\..\</RepoRootDir>
     <PluginsDir>$(APPDATA)\Autodesk\ApplicationPlugins\SldBuilder.bundle\</PluginsDir>
   </PropertyGroup>
 
@@ -64,6 +65,7 @@
     <ItemGroup>
       <_BundleBinaries Include="$(OutDir)**\*" Exclude="$(OutDir)**\*.pdb" />
       <_ManifestParts Include="$(ManifestPartsDir)*.xml" />
+      <_LicenseFiles Include="$(RepoRootDir)LICENSE;$(RepoRootDir)THIRD-PARTY-NOTICES.txt" />
     </ItemGroup>
     <PropertyGroup>
       <!-- Default manifest = all supported versions. INSTALL.BAT rebuilds it from the same parts for the chosen version. -->
@@ -73,13 +75,14 @@
     <WriteLinesToFile File="$(BundleDir)PackageContents.xml" Lines="$(_Manifest)" Overwrite="true" />
     <Copy SourceFiles="@(_ManifestParts)" DestinationFolder="$(BundleDir)Installer\PackageContents" />
     <Copy SourceFiles="@(_BundleBinaries)" DestinationFolder="$(BundleDir)Contents\Win64\%(RecursiveDir)" />
+    <Copy SourceFiles="@(_LicenseFiles)" DestinationFolder="$(BundleDir)" />
     <Message Importance="high" Text="Bundle: $(BundleDir)" />
   </Target>
 
   <Target Name="PackRelease" AfterTargets="AssembleBundle">
     <MakeDir Directories="$(ReleaseDir)" />
     <ZipDirectory SourceDirectory="$(BundleDir)" DestinationFile="$(ReleaseDir)SldBuilder.bundle.zip" Overwrite="true" />
-    <Copy SourceFiles="$(InstallerDir)INSTALL.BAT" DestinationFolder="$(ReleaseDir)" />
+    <Copy SourceFiles="$(InstallerDir)INSTALL.BAT;@(_LicenseFiles)" DestinationFolder="$(ReleaseDir)" />
     <ZipDirectory SourceDirectory="$(ReleaseDir)" DestinationFile="$(ArtifactsDir)$(ReleaseName).zip" Overwrite="true" />
     <Message Importance="high" Text="Release: $(ArtifactsDir)$(ReleaseName).zip" />
   </Target>
