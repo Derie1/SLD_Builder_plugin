@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ApplicationPackage
     SchemaVersion="1.0"
-    AppVersion="0.6.0"
+    AppVersion="0.6.1"
     Name="SLD Builder"
     Description="Builds single line diagrams of distribution boards from an Excel calculation file."
     Author="Mikhail Davydov"

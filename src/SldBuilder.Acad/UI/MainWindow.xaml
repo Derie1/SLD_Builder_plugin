@@ -17,6 +17,13 @@
             <Setter Property="Margin" Value="6,0,0,0" />
             <Setter Property="Content" Value="..." />
         </Style>
+        <!-- Editable: a path can be typed or pasted; the drop-down holds the last used files. -->
+        <Style x:Key="PathBox" TargetType="ComboBox">
+            <Setter Property="IsEditable" Value="True" />
+            <Setter Property="Height" Value="25" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}" />
+        </Style>
     </Window.Resources>
 
     <DockPanel>
@@ -50,7 +57,7 @@
                 <Image DockPanel.Dock="Left" Width="18" Height="20" Margin="0,0,6,0"
                        Source="/SldBuilder.Acad;component/Resources/xlsx.png" />
                 <Button DockPanel.Dock="Right" Style="{StaticResource BrowseButton}" Click="OnBrowseExcel" />
-                <TextBox x:Name="ExcelPath" VerticalContentAlignment="Center" Height="25" />
+                <ComboBox x:Name="ExcelPath" Style="{StaticResource PathBox}" />
             </DockPanel>
 
             <DockPanel Margin="0,16,0,4">
@@ -63,7 +70,7 @@
                 <Image DockPanel.Dock="Left" Width="18" Height="20" Margin="0,0,6,0"
                        Source="/SldBuilder.Acad;component/Resources/dwg.png" />
                 <Button DockPanel.Dock="Right" Style="{StaticResource BrowseButton}" Click="OnBrowseDwg" />
-                <TextBox x:Name="DwgPath" VerticalContentAlignment="Center" Height="25" />
+                <ComboBox x:Name="DwgPath" Style="{StaticResource PathBox}" />
             </DockPanel>
         </StackPanel>
     </DockPanel>

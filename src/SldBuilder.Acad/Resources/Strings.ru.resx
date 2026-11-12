@@ -74,4 +74,7 @@
   <data name="Done" xml:space="preserve">
     <value>Схема построена: групп {0}, удалено старых блоков {1}, предупреждений {2}.</value>
   </data>
+  <data name="WarnSettingsNotSaved" xml:space="preserve">
+    <value>Список последних файлов не сохранён в {0}: {1}</value>
+  </data>
 </root>

@@ -19,8 +19,13 @@
 ## Принцип работы
 
 1. **Окно.** Команда `SLDBUILD` открывает окно, где выбираются расчётный файл Excel и чертёж: шаблон
-   для новой схемы или ранее построенная схема. По умолчанию подставляются шаблоны из папки `Templates`
-   рядом с плагином — русские или английские, в зависимости от языка интерфейса.
+   для новой схемы или ранее построенная схема. Поля запоминают последние 10 файлов (выпадающий список),
+   при запуске подставляются файлы, выбранные в прошлый раз, и состояние галочки «Новая схема из шаблона».
+   Для шаблонов и для построенных схем ведутся отдельные списки: галочка переключает поле чертежа между ними.
+   Несуществующие файлы в список не попадают. История хранится в `%APPDATA%\SldBuilder\settings.json`
+   и обновляется при нажатии «Построить схему»; переустановка плагина её не стирает.
+   При первом запуске подставляются шаблоны из папки `Templates` рядом с плагином — русские или английские,
+   в зависимости от языка интерфейса.
 2. **Чтение Excel.** Данные берутся с листа `AutoCAD` расчётного файла через именованные диапазоны:
 
    | Диапазон / ячейка | Данные | Блок |
@@ -124,8 +129,13 @@ and a DWG template with dynamic blocks. It runs in AutoCAD 2025 and newer.
 ## How it works
 
 1. **Window.** The `SLDBUILD` command opens a window where the Excel calculation file and the drawing are chosen:
-   a template for a new diagram or a previously built diagram. By default the templates from the `Templates` folder
-   next to the plugin are suggested — Russian or English, depending on the interface language.
+   a template for a new diagram or a previously built diagram. The fields remember the last 10 files (drop-down list);
+   on start they show the files chosen last time and the state of the "Build new SLD from template" check box.
+   Templates and built diagrams have separate lists: the check box switches the drawing field between them.
+   Files that no longer exist are not offered. The history is kept in `%APPDATA%\SldBuilder\settings.json`,
+   updated when "Build SLD" is pressed and not removed by reinstalling the plugin.
+   On the first run the templates from the `Templates` folder next to the plugin are suggested — Russian or English,
+   depending on the interface language.
 2. **Reading Excel.** Data comes from the `AutoCAD` sheet of the calculation file through named ranges:
 
    | Range / cell | Data | Block |

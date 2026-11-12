@@ -5,6 +5,7 @@ using SldBuilder.Acad.Resources;
 using SldBuilder.Acad.UI;
 using SldBuilder.Core.Excel;
 using SldBuilder.Core.Models;
+using SldBuilder.Core.Settings;
 using AcApp = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 using AcUiApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
@@ -14,15 +15,23 @@ namespace SldBuilder.Acad;
 
 public class Commands
 {
+    /// <summary>In the user profile, outside the bundle: the history survives reinstalling and updating the plugin.</summary>
+    private static readonly string SettingsPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SldBuilder", "settings.json");
+
     /// <summary>
     /// Session context: the command may open or create another drawing and make it current.
     /// </summary>
     [CommandMethod("SLDBUILDER", "SLDBUILD", CommandFlags.Session)]
     public void BuildSld()
     {
-        var window = new MainWindow(TemplateLocator.DefaultExcel, TemplateLocator.DefaultDrawing);
+        var settings = UserSettings.Load(SettingsPath);
+        var window = new MainWindow(settings);
         if (AcUiApp.ShowModalWindow(window) != true || window.Request is not { } request)
             return;
+
+        // Saved before building: the chosen files are remembered even if the build then fails.
+        SaveSettings(settings);
 
         SldData data;
         try
@@ -70,6 +79,20 @@ public class Commands
 
         documents.MdiActiveDocument = document;
         return document;
+    }
+
+    /// <summary>The history is a convenience: a write failure is reported but never stops the build.</summary>
+    private static void SaveSettings(UserSettings settings)
+    {
+        try
+        {
+            settings.Save(SettingsPath);
+        }
+        catch (System.Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            AcApp.DocumentManager.MdiActiveDocument?.Editor.WriteMessage(
+                "\n" + string.Format(Strings.WarnSettingsNotSaved, SettingsPath, ex.Message));
+        }
     }
 
     private static void Report(Document document, SldData data, DrawResult result)

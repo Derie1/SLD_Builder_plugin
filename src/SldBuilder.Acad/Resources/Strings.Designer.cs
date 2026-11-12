@@ -90,5 +90,8 @@ namespace SldBuilder.Acad.Resources {
 
         /// <summary>SLD built: {0} groups, {1} old blocks erased, {2} warnings.</summary>
         public static string Done => ResourceManager.GetString("Done", resourceCulture)!;
+
+        /// <summary>Recent files were not saved to {0}: {1}</summary>
+        public static string WarnSettingsNotSaved => ResourceManager.GetString("WarnSettingsNotSaved", resourceCulture)!;
     }
 }

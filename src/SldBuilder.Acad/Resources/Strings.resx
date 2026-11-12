@@ -74,4 +74,7 @@ Select your Excel calculation file. Then tick the checkbox to create a new board
   <data name="Done" xml:space="preserve">
     <value>SLD built: {0} groups, {1} old blocks erased, {2} warnings.</value>
   </data>
+  <data name="WarnSettingsNotSaved" xml:space="preserve">
+    <value>Recent files were not saved to {0}: {1}</value>
+  </data>
 </root>
